@@ -15,6 +15,28 @@ This repository provides a beginner-friendly setup to work on Google Colab noteb
 2. Push and update notebooks automatically or manually to GitHub.
 3. Reopen notebooks anywhere with a single Colab link.
 
+## 🚀 Quick Reference (TL;DR)
+
+**First time in Colab? Start here:**
+
+```python
+# 1. Clone repo
+!git clone https://github.com/UmeshCode1/Colab-Sync-System.git
+%cd Colab-Sync-System
+
+# 2. Setup once per session (enter username/email/token when prompted)
+!python scripts/colab_setup.py
+
+# 3. Do your work...
+# (edit notebooks, run code, etc.)
+
+# 4. Push changes
+from scripts.colab_setup import quick_push
+quick_push('YourNotebook.ipynb', 'Your commit message')
+```
+
+That's it! No repeated authentication needed for the rest of the session.
+
 ## How to open a notebook directly in Colab
 
 Use the following URL format:
@@ -104,9 +126,48 @@ This repository includes a GitHub Actions workflow (`.github/workflows/nbconvert
 
 You don't need to do anything to enable it other than pushing this repo to GitHub.
 
-## Helper script: push_from_colab.py
+## Easy Colab Setup (Recommended)
 
-For a safe, repeatable manual sync from a Colab runtime, see `scripts/push_from_colab.py`. It clones the repository inside the Colab runtime, copies a local notebook into the clone, commits, and pushes using a runtime-provided token.
+### One-time setup per Colab session
+
+For the easiest workflow, use the `colab_setup.py` script. Run this **once** at the start of your Colab session:
+
+```python
+# Run this in the first cell of your notebook
+!git clone https://github.com/UmeshCode1/Colab-Sync-System.git
+%cd Colab-Sync-System
+!python scripts/colab_setup.py
+```
+
+This will prompt you for:
+- GitHub username
+- Git email
+- GitHub Personal Access Token (PAT)
+
+Your credentials are stored **only in the session environment** (not in the notebook file).
+
+### Quick push after setup
+
+After the one-time setup, push changes with a simple function call:
+
+```python
+# Import the helper
+from scripts.colab_setup import quick_push
+
+# Push a specific notebook
+quick_push('Demo_Notebook.ipynb', 'Updated analysis')
+
+# Or push all changes
+quick_push(commit_message='Updated multiple files')
+```
+
+That's it! No need to re-enter credentials for the rest of the session.
+
+---
+
+## Alternative: Manual push script
+
+For more control, see `scripts/push_from_colab.py`. It clones the repository inside the Colab runtime, copies a local notebook into the clone, commits, and pushes using a runtime-provided token.
 
 Basic usage inside Colab (run in a code cell):
 
