@@ -1,0 +1,79 @@
+name: Auto-Sync Notebooks
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.ipynb'
+  workflow_dispatch:
+
+jobs:
+  sync-and-backup:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install nbformat nbconvert jupyter
+          
+      - name: Convert notebooks to Python scripts
+        run: |
+          echo "Converting notebooks to .py files..."
+          find . -name "*.ipynb" -not -path "./.git/*" -not -path "./.*" | while read notebook; do
+            echo "Converting: $notebook"
+            jupyter nbconvert --to script "$notebook" || echo "Failed to convert $notebook"
+          done
+          
+      - name: Generate notebook metadata
+        run: |
+          python << 'EOF'
+          import json
+          import os
+          from pathlib import Path
+          
+          notebooks = []
+          for nb_path in Path('.').rglob('*.ipynb'):
+              if '.git' not in str(nb_path) and not str(nb_path).startswith('.'):
+                  notebooks.append({
+                      'name': nb_path.name,
+                      'path': str(nb_path),
+                      'colab_url': f'https://colab.research.google.com/github/UmeshCode1/Colab-Sync-System/blob/main/{nb_path}'
+                  })
+          
+          with open('notebooks.json', 'w') as f:
+              json.dump({'notebooks': notebooks, 'count': len(notebooks)}, f, indent=2)
+          
+          print(f"Found {len(notebooks)} notebooks")
+          EOF
+          
+      - name: Create backup branch
+        run: |
+          # Create a backup branch with timestamp
+          BACKUP_BRANCH="backup-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b $BACKUP_BRANCH
+          git push origin $BACKUP_BRANCH || echo "Backup branch creation skipped"
+          git checkout main
+          
+      - name: Commit generated files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Auto-sync: Convert notebooks and update metadata"
+          file_pattern: "*.py notebooks.json"
+          
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages

@@ -1,0 +1,40 @@
+image: gitpod/workspace-python
+
+tasks:
+  - name: Setup Environment
+    init: |
+      echo "Installing dependencies..."
+      pip install -r requirements.txt
+      pip install jupyter jupyterlab notebook
+      echo "Setup complete!"
+    command: |
+      echo "🚀 Colab Sync System - Gitpod Environment"
+      echo "Ready to work on notebooks!"
+      echo ""
+      echo "Quick commands:"
+      echo "  jupyter lab     - Start Jupyter Lab"
+      echo "  jupyter notebook - Start Jupyter Notebook"
+      echo "  python scripts/colab_setup.py - Run setup"
+
+ports:
+  - port: 8888
+    onOpen: open-preview
+    description: Jupyter Server
+
+vscode:
+  extensions:
+    - ms-python.python
+    - ms-python.vscode-pylance
+    - ms-toolsai.jupyter
+    - ms-toolsai.jupyter-keymap
+    - ms-toolsai.jupyter-renderers
+
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: false
+    addCheck: true
+    addComment: false
+    addBadge: true

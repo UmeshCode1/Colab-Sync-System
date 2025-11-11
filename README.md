@@ -1,13 +1,22 @@
 # Colab-Sync-System
 
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/UmeshCode1/Colab-Sync-System/blob/main/Quick_Start_Colab.ipynb)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/UmeshCode1/Colab-Sync-System)
+[![Website](https://img.shields.io/badge/Website-Live-green)](https://umeshcode1.github.io/Colab-Sync-System/)
+
 Repository: `UmeshCode1/Colab-Sync-System`
 
-This repository provides a beginner-friendly setup to work on Google Colab notebooks and keep them synced with GitHub. It includes:
+**🌐 Website:** https://umeshcode1.github.io/Colab-Sync-System/
 
-- A Colab template notebook (`Colab_Template.ipynb`) with sections for title/description, imports, dataset loading, training, results and notes.
-- A sample demo notebook (`Demo_Notebook.ipynb`) showing a basic Python example and a small sklearn Iris training demo.
-- A `.gitignore` tuned for Colab and dataset caches.
-- `requirements.txt` with common packages used in demos.
+This repository provides a complete cloud-based solution to work on Jupyter notebooks and keep them synced automatically across all platforms. It includes:
+
+- **Cloud-first workflow:** Work entirely in the cloud, no local setup required
+- **Auto-sync:** Automatic synchronization with GitHub on every change
+- **Multiple platforms:** Google Colab, GitHub Codespaces, Gitpod, Kaggle
+- **One-time auth:** Set credentials once per session, push with one function
+- **Interactive website:** Browse and launch notebooks from web interface
+- Template and demo notebooks ready to use
+- Automatic notebook-to-Python conversion via GitHub Actions
 
 ## Quick goals
 
@@ -105,12 +114,28 @@ os.system("git push origin main")
 - If you use `git` commands, avoid exposing tokens. Use runtime input or mount Google Drive to hold an encrypted token if needed.
 - Keep data files in `data/` and add them to `.gitignore` if they are large.
 
-## Files in this repo
+## 🌍 Cloud Platform Support
 
-- `Colab_Template.ipynb` — a ready-to-use template for new projects.
-- `Demo_Notebook.ipynb` — example notebook with code and markdown.
-- `.gitignore` — ignores Colab temporary files and dataset caches.
-- `requirements.txt` — packages used by the demo.
+This repository works seamlessly on multiple cloud platforms:
+
+- **Google Colab** (Primary) - Best for ML/Data Science with free GPU
+- **GitHub Codespaces** - Full VS Code IDE in browser
+- **Gitpod** - Quick cloud development environment
+- **Kaggle Notebooks** - Data science competitions and datasets
+
+See [CLOUD_IDE_GUIDE.md](CLOUD_IDE_GUIDE.md) for detailed setup instructions for each platform.
+
+## 📁 Files in this repo
+
+- `Quick_Start_Colab.ipynb` — Interactive tutorial for the complete workflow
+- `Colab_Template.ipynb` — Ready-to-use template for new projects
+- `Demo_Notebook.ipynb` — ML example with sklearn Iris dataset
+- `scripts/colab_setup.py` — One-time authentication setup
+- `scripts/push_from_colab.py` — Manual push helper
+- `.github/workflows/` — Auto-sync and conversion workflows
+- `.devcontainer/` — GitHub Codespaces configuration
+- `.gitpod.yml` — Gitpod environment setup
+- `docs/index.html` — Project website
 
 ## Reopen anywhere
 
