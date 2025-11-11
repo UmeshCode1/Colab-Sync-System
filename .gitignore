@@ -1,0 +1,18 @@
+.ipynb_checkpoints/
+*.pyc
+__pycache__/
+*.egg-info/
+.cache/
+/.pytest_cache/
+
+# Data and caches (adjust as needed)
+data/
+*.csv
+*.h5
+*.npz
+
+# Colab/Drive temp
+drive/MyDrive/
+
+# Notebook checkpoints and temporary outputs
+.ipynb_checkpoints
