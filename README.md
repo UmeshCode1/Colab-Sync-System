@@ -97,3 +97,28 @@ Any notebook pushed to this repo can be reopened with the Colab link format abov
 ---
 
 If you want, I can also prepare a small GitHub Actions workflow to automatically update a branch when notebooks are changed, or add a tiny script that converts notebooks to .py for version control. Tell me which you'd prefer next.
+ 
+## Automation: convert notebooks to .py on push
+
+This repository includes a GitHub Actions workflow (`.github/workflows/nbconvert.yml`) that runs on pushes to `main`. It converts any `.ipynb` files to `.py` scripts using `jupyter nbconvert` and commits the generated `.py` files back to the repository. This helps with code review and diffs.
+
+You don't need to do anything to enable it other than pushing this repo to GitHub.
+
+## Helper script: push_from_colab.py
+
+For a safe, repeatable manual sync from a Colab runtime, see `scripts/push_from_colab.py`. It clones the repository inside the Colab runtime, copies a local notebook into the clone, commits, and pushes using a runtime-provided token.
+
+Basic usage inside Colab (run in a code cell):
+
+```python
+from getpass import getpass
+token = getpass('GitHub token: ')
+import os
+os.environ['GITHUB_TOKEN'] = token
+!python scripts/push_from_colab.py --token "$token" --repo UmeshCode1/Colab-Sync-System --notebook Demo_Notebook.ipynb --branch main --commit "Update Demo from Colab"
+```
+
+Notes:
+- The script uses the provided token only at runtime and does not store it.
+- You can set `--name` and `--email` to customize the commit author.
+
